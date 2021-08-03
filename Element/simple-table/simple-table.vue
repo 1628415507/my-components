@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-08 15:26:46
- * @LastEditTime: 2021-07-30 09:46:02
+ * @LastEditTime: 2021-08-03 11:49:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rfkt-admin\src\views\basicInformation\course\components\simple-table.vue
@@ -45,6 +45,13 @@
 </template>
 
 <script>
+/**
+ * 【labelList中的对象属性】：{
+ *  isFormatter：是否需要对数据进行格式化，默认否，是：则传入formatter方法设置
+ *  其他：label、prop、width、headerAlign、align同el-table-columne原属性
+ * }
+ *
+*/
     export default {
         props: {
             dataList: {
@@ -56,6 +63,10 @@
                 type: Array,
                 default: () => [], // 数据列的显示标题和字段名
                 required: true
+            },
+            formatter: {
+                type: Function,
+                default: () => {} // 数据列-数据格式化方法
             },
             height: {
                 type: Number, // 表格高度
@@ -75,10 +86,6 @@
                 validator: function (val) {
                     return ['medium', 'small', 'mini'].includes(val) // 可选值:medium / small / mini
                 }
-            },
-            formatter: {
-                type: Function,
-                default: () => {} // 数据列-数据格式化方法
             }
         },
         data () {
@@ -90,11 +97,14 @@
         methods: {
             // 格式化数据
             formatVal (row, column, cellValue, index) {
+                // row：当前行数据
+                // column：当前列属性
+                // cellValue：
                 const temp = {
-                    prop: column.property, // 字段名
-                    val: cellValue // 字段值
+                    prop: column.property // 字段名
+                    // val: cellValue // 字段值
                 }
-                return this.formatter({ ...row, ...temp })
+                return this.formatter({ ...row, ...temp })// 传入当前行的数据和temp中的数据
             }
         },
         watch: {

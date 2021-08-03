@@ -162,7 +162,6 @@
                 if (obj.prop === 'status') {
                     return this.$util.dicShow('UP_OR_DOWN', obj.status) || ''
                 }
-                return obj.val
             }
         },
         mounted () {
