@@ -1,8 +1,8 @@
 <template>
-  <div
-    :style="{ width: vesselWidth, height: vesselHeight}"
-    :ref="propsRef"
-  ></div>
+    <div
+        :style="{ width: vesselWidth, height: vesselHeight}"
+        :ref="propsRef"
+    ></div>
 </template>
 
 <script>
