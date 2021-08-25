@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-08 15:26:46
- * @LastEditTime: 2021-08-05 17:50:56
+ * @LastEditTime: 2021-08-25 16:08:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rfkt-admin\src\views\basicInformation\course\components\simple-table.vue
@@ -16,8 +16,9 @@
             :data="tableData"
             :height="height"
             @selection-change="handleSelectionChange"
+            :header-cell-style="headerCellStyle"
         >
-            <!-- 1.多选 -->
+            <!-- 1.多选列 -->
             <el-table-column v-if="selectShow" type="selection"  fixed="left" header-align="center" align="center" width="50" :selectable="handleSelectAble"></el-table-column>
             <!-- 2.序号列 -->
             <el-table-column v-if="indexShow" type="index" label="序号" fixed="left" width="48" header-align="center" align="center"></el-table-column>
@@ -83,7 +84,7 @@
 
 <script>
 /**
- * 【labelList中对象的属性】：{
+ * 【labelList中的对象属性】：{
  *   isFormatter：可选值[true,false] 是否需要对数据进行格式化，默认否；是：则传入formatter方法处理
  *   type:可选值[img,solt]
  *        img  图片类型
@@ -93,6 +94,7 @@
 */
     export default {
         props: {
+            // 数据部分
             dataList: {
                 type: Array,
                 default: () => [], // 表格的 数据
@@ -107,10 +109,6 @@
                 type: Function,
                 default: () => {} // 用来格式化内容，将表格的数据处理后返回展示
             },
-            height: {
-                type: Number, // 表格高度
-                required: false
-            },
             selectShow: {
                 type: Boolean,
                 default: false // 是否显示 复选框
@@ -123,9 +121,14 @@
                 type: Boolean,
                 default: false // 是否显示 操作列
             },
+            // 样式部分
             loading: {
                 type: Boolean,
                 default: false // 是否显示 加载动画
+            },
+            height: {
+                type: Number, // Table 的高度
+                required: false
             },
             size: {
                 type: String,
@@ -133,6 +136,11 @@
                 validator: function (val) {
                     return ['medium', 'small', 'mini'].includes(val) // 可选值:medium / small / mini
                 }
+            },
+            headerCellStyle: { // 表头单元格的 style
+                type: Object,
+                required: false,
+                default: () => {}
             }
         },
         data () {
@@ -148,8 +156,8 @@
                     prop: column.property, // 字段名
                     val: cellValue // 字段值
                 }
-                return this.formatter(temp) // 将数据传入formatter()方法处理后返回
-                // return this.formatter({ ...row, ...temp })
+                // return this.formatter(temp) // 将数据传入formatter()方法处理后返回
+                return this.formatter({ ...row, ...temp })// 传入scope.row的值
             },
             // 当选择项发生变化时会触发该事件
             handleSelectionChange (selection) {

@@ -37,8 +37,7 @@
         @hanleSize="handleSizeChange">
       </Pagination>
     </el-form>
-    <AddEdit v-if="addDialog" :dialog.sync="addDialog" :titleName="titleName" :editData="editData" @getSchemeList="getSchemeList"></AddEdit>
-  </div>
+ </div>
 </template>
 <script>
     import SimpleTable from '@/components/public/simple-table'
@@ -94,11 +93,6 @@
                 this.addDialog = true
                 this.editData = item || ''
                 this.titleName = val
-            },
-            getSchemeList () {
-                this.$message.success('保存成功')
-                this.getTableData()
-                this.addDialog = false
             },
             // 删除
             deleteForm (ids) {
