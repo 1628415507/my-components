@@ -1,7 +1,7 @@
 <template>
-    <div class="curbox-wapper">
-        <div :ref="propsRef" class="curbox"></div>
-    </div>
+  <div class="curbox-wapper">
+    <div :ref="propsRef" class="curbox"></div>
+  </div>
 </template>
 
 <script>
@@ -24,7 +24,8 @@
                 lowData: [], // 低
                 actualData: [], // 实际值
                 barWidth: '8%', // 柱条宽度
-                barMaxWidth: 20
+                barMaxWidth: 20,
+                option: {}
             }
         },
         methods: {
@@ -53,7 +54,8 @@
                 })
                 // 绘制图表
                 let curChart = this.$echarts.init(this.$refs[`${this.propsRef}`])
-                let option = {
+                // 配置图表数据
+                this.option = {
                     barMinHeight: 100,
                     tooltip: {
                         // 提示框组件。
@@ -61,7 +63,8 @@
                         axisPointer: {
                             // 坐标轴指示器，坐标轴触发有效
                             type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'| 'cross'
-                        }
+                        },
+                        formatter: ''
                     },
                     legend: {
                         // 图例组件(顶部提示)
@@ -179,10 +182,47 @@
                         }
                     ]
                 }
-                option && curChart.setOption(option)
+                // 自定义Tooltip显示样式
+                this.option &&
+                    this.option.tooltip &&
+                    (this.option.tooltip.formatter = this.formatTooltip) // 加载页面时候替换tooltip的formatter
+                this.option && curChart.setOption(this.option)
                 window.addEventListener('resize', () => {
                     curChart.resize()
                 })
+            },
+            // 自定义Tooltip显示样式
+            formatTooltip (params) {
+                let htmlStr = ''
+                let toolInfo = {
+                    high: { name: '高', val: '', color: '#FE7148' },
+                    middle: { name: '中', val: '', color: '#F5BE00' },
+                    low: { name: '低', val: '', color: '#096DD8' },
+                    actual: { name: '实际值', val: '', color: '#41C6C0' }
+                }
+                // 赋值
+                for (var i = 0, len = params.length; i < len; i++) {
+                    if (params[i].seriesName === '高') {
+                        toolInfo.high.val = params[i].value + toolInfo.middle.val
+                    }
+                    if (params[i].seriesName === '中') {
+                        toolInfo.middle.val = params[i].value + toolInfo.low.val
+                    }
+                    if (params[i].seriesName === '低') {
+                        toolInfo.low.val = params[i].value
+                    }
+                    if (params[i].seriesName === '实际值') {
+                        toolInfo.actual.val = params[i].value
+                    }
+                }
+                // 编写展示模板
+                Object.keys(toolInfo).forEach((key) => {
+                    htmlStr += `<div style="display: flex; justify-content: space-between; ">
+                        <div><span style="font-size:18px;color:${toolInfo[key].color};">●</span> ${toolInfo[key].name}</div>
+                        <div style="font-weight:500; margin-left: 15px;">${toolInfo[key].val}</div>
+                    </div>`
+                })
+                return htmlStr
             }
         },
         watch: {
@@ -198,13 +238,13 @@
 
 <style lang="less" scoped>
 .curbox-wapper {
-    width: 98%;
+  width: 98%;
+  height: 100%;
+  .curbox {
+    width: 100%;
     height: 100%;
-    .curbox {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-    }
+    display: flex;
+    justify-content: center;
+  }
 }
 </style>
