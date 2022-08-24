@@ -4,7 +4,7 @@
 			<view class="title">选择报告对比日期</view>
 			<view class="content-wrap">
 				<u-collapse :head-style="headStyle" :accordion="false">
-					<u-collapse-item v-for="(item, index) in dateList" :title="item.actionTypeName"
+					<u-collapse-item v-for="(item) in dateList" :title="item.actionTypeName"
 						:key="item.actionTypeName">
 						<view class="date-list">
 							<view v-for="(item, index) in list" :key="index" class="item"
