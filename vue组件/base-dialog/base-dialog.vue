@@ -1,13 +1,13 @@
 <!--
  * @Author: Hongzf
- * @Date: 2021-07-01 09:29:55
- * @LastEditTime: 2021-09-28 16:38:41
+ * @Date: 2022-08-24 12:34:01
  * @LastEditors: Hongzf
- * @Description: In User Settings Edit
- * @FilePath: \office-material-web\src\components\currentSystem\MaterialList.vue
+ * @LastEditTime: 2022-08-24 12:36:09
+ * @Description: 
 -->
+
 <template >
-  <el-dialog title="选择物资" :visible.sync="dialogVisible" width="640px">
+  <el-dialog title="弹框" :visible.sync="dialogVisible" width="640px">
     哈哈哈哈哈
   </el-dialog>
 </template>

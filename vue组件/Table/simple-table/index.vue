@@ -1,179 +1,188 @@
 <template>
-  <div class="course_page">
-    <div class="top clearfix" style="display: none"></div>
-    <!-- 表格 -->
+  <div class="newsPage">
+    <div class="top clearfix"></div>
     <div class="tableBackgroundDiv">
-      <!-- 按钮 -->
       <div class="btn_gronp">
-        <el-button
-          type="primary"
-          size="mini"
-          @click="handleFormVisible(null, '添加课程')"
-          >添加</el-button
-        >
+          <el-button type="primary" size="medium" @click="addForm('添加')">添加</el-button>
+          <el-button type="primary" size="medium" @click="deleteForm(currentRowIds)" :disabled="currentRowIds.length === 0">批量删除</el-button>
       </div>
-      <!-- 列表 -->
+        <!-- 列表 -->
         <simple-table
           :loading="loading"
           :dataList="tableData"
           :labelList="labelData"
           :height="tableHeight"
           :formatter="formatVal"
-          :isOperateColumn="true"
+          :operateShow="true"
+          :indexShow="true"
+          :selectShow="true"
+          @selection-change="handleSelectionChange"
+          @select-able="useRevoke"
       >
       <!-- 操作列 -->
-        <template #operate="slotScope">
-          <div class="operation">
-            <span
-              class="defaultColor"
-              @click="handleFormVisible(slotScope.rowData, '编辑课程')"
-              >编辑</span
-            >
-            <span
-              v-if="slotScope.rowData.status !== 1"
-              class="defaultColor"
-              @click="handleStatus(slotScope.rowData.id, 1)"
-              >上架</span
-            >
-            <span
-              v-if="slotScope.rowData.status !== 2"
-              class="defaultColor"
-              @click="handleStatus(slotScope.rowData.id, 2)"
-              >下架</span
-            >
-            <span
-              v-if="slotScope.rowData.status !== 1"
-              class="defaultColor"
-              @click="handleDelete(slotScope.rowData.id)"
-              >删除</span
-            >
-          </div>
+        <template #operate="scope">
+            <div class="operation">
+                <span v-if="scope.row.status === 2" class="defaultColor" @click="offUpForm(scope.row.id)">上架</span>
+                <span v-if="scope.row.status === 1" class="defaultColor" @click="offShelf(scope.row.id)">下架</span>
+                <span class="defaultColor" @click="addForm('编辑', scope.row)">编辑</span>
+                <span v-if="scope.row.status === 2" class="defaultColor" @click="deleteForm(scope.row.id)">删除</span>
+            </div>
         </template>
       </simple-table>
     </div>
-    <!-- 分页 -->
     <el-form :inline="true" class="footer-btn clearfix">
-      <Pagination
-        class="pageClass"
+      <Pagination class="pageClass"
         :params="params"
         @hanlePage="handleCurrentChange"
-        @hanleSize="handleSizeChange"
-      >
+        @hanleSize="handleSizeChange">
       </Pagination>
     </el-form>
-    <!-- 弹框 -->
-    <DialogForm
-      v-if="dialogVisible"
-      :isVisible.sync="dialogVisible"
-      :title="title"
-      :editData="editData"
-      @getTableData="getTableData()"
-    ></DialogForm>
-  </div>
+ </div>
 </template>
-
 <script>
     import SimpleTable from '@/components/public/simple-table'
+    // import md5 from 'js-md5'
     import mixin from '@/mixin'
-    import DialogForm from './components/dialog-form'
-    import { getCourseByPage, deleteCourse, updateStatus } from '@/api/api'
+    import AddEdit from './components/add-edit'
+    import { getNewsPage, useNews, deleteNews } from '@/api/api'
     export default {
         mixins: [mixin],
-        components: { DialogForm, SimpleTable },
+        components: {
+            AddEdit, SimpleTable
+        },
         data () {
             return {
+                addDialog: false,
+                titleName: '',
+                loading: true,
                 tableData: [],
-                dialogVisible: false,
-                title: '',
-                editData: {},
-                labelData: [
-                    { label: '课程名称', prop: 'courseName' },
-                    { label: '上架日期', prop: 'publishTime' },
-                    { label: '课程金额', prop: 'courseFee', isFormatter: true },
-                    { label: '显示顺序', prop: 'courseSort' },
+                currentRow: [],
+                currentRowIds: [], // 删除的ids
+                labelData: Object.freeze([
+                    { label: '新闻标题', prop: 'title' },
+                    { label: '封面图', prop: 'coverImage', type: 'img' },
+                    { label: '发布人', prop: 'publisher' },
+                    { label: '发布时间', prop: 'publishTime' },
+                    { label: '是否置顶', prop: 'isTop', isFormatter: true },
                     { label: '状态', prop: 'status', isFormatter: true }
-                ]
+                ])
+            }
+        },
+        watch: {
+            'params.total': function () {
+                if (this.params.total === (this.params.current - 1) * this.params.size && this.params.total !== 0) {
+                    this.params.current -= 1
+                    this.getTableData()
+                }
             }
         },
         methods: {
-            handleFormVisible (rowData, title) {
-                this.title = title
-                this.editData = rowData
-                this.dialogVisible = true
+            // 勾选
+            handleSelectionChange (rows) {
+                this.currentRowIds = rows.map(item => item.id)
+                this.currentRow = rows
             },
-            // 上/下架
-            handleStatus (courseId, status) {
-                const tips = status === 1 ? '确认上架？' : '确认下架？'
-                const successMsg = status === 1 ? '上架成功！' : '下架成功！'
-                this.$confirm(tips, '提示', {
+            useRevoke (row, index) {
+                if (row.status === 2) {
+                    return true
+                } else {
+                    return false
+                }
+            },
+            addForm (val, item) {
+                this.addDialog = true
+                this.editData = item || ''
+                this.titleName = val
+            },
+            // 删除
+            deleteForm (ids) {
+                this.$confirm('是否确认删除选中的新闻?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    updateStatus({ courseId, status })
-                        .then((res) => {
-                            this.$message.success(successMsg)
-                            this.getTableData()
-                        })
-                        .catch((err) => {
-                            console.log(err)
-                        })
+                    deleteNews(ids).then(res => {
+                        this.$message.success('删除成功')
+                        this.getTableData()
+                    })
                 })
             },
-            // 删除课程名称
-            handleDelete (id) {
-                this.$confirm('确认删除？', '提示', {
+            // 上架
+            offUpForm (id) {
+                this.$confirm('是否确认上架该新闻', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    deleteCourse({ courseId: id })
-                        .then((res) => {
-                            this.$message.success('删除成功!')
-                            this.getTableData()
-                        })
-                        .catch((err) => {
-                            console.log(err)
-                        })
+                    useNews({
+                        id: id,
+                        status: 1
+                    }).then(res => {
+                        this.$message.success('上架成功')
+                        this.getTableData()
+                    }).catch(err => {
+                        this.$message.error(err.response.data.message)
+                    })
                 })
             },
-            // 获取列表数据
+            // 下架
+            offShelf (id) {
+                this.$confirm('是否确认下架该新闻', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    useNews({
+                        id: id,
+                        status: 2
+                    }).then(res => {
+                        this.$message.success('下架成功')
+                        this.getTableData()
+                    }).catch(err => {
+                        this.$message.error(err.response.data.message)
+                    })
+                })
+            },
             getTableData () {
                 this.loading = true
-                getCourseByPage({
+                getNewsPage({
                     page: this.params.current,
-                    size: this.params.size
+                    size: this.params.size,
+                    status: null
+                }).then(res => {
+                    this.tableData = res.data
+                    this.getPagination(res)
+                    this.loading = false
+                }).catch(err => {
+                    console.log(err)
+                    this.loading = false
                 })
-                    .then((res) => {
-                        this.tableData = res.data
-                        this.getPagination(res)
-                        this.loading = false
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                        this.loading = false
-                    })
             },
             // 格式化数据
             formatVal (obj) {
-                if (obj.prop === 'courseFee') {
-                    return obj.courseFee + '元'
+                // 是否置顶
+                if (obj.prop === 'isTop') {
+                    return obj.val === 1 ? '是' : '否'
                 }
+                // 状态
                 if (obj.prop === 'status') {
-                    return this.$util.dicShow('UP_OR_DOWN', obj.status) || ''
+                    return this.$util.dicShow('UP_OR_DOWN', obj.val) || ''
                 }
-                return obj.val
             }
         },
         mounted () {
             this.getHeight()
-            this.$nextTick(() => {
-                this.hegihtNum = document.querySelector('.filterForm').clientHeight
-            })
-            this.getTableData()
+            this.handleQuery()
         }
     }
 </script>
-
-<style lang="less" scope>
+<style lang="less">
+.newsPage{
+    .el-dialog .el-form--inline .el-form-item{
+        margin-right: 0;
+    }
+    .top {
+        padding: 0;
+    }
+}
 </style>

@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hongzf
+ * @Date: 2022-08-24 11:37:35
+ * @LastEditors: Hongzf
+ * @LastEditTime: 2022-08-24 14:09:15
+ * @Description: 
+-->
 <template>
   <my-tree :tree-data="treeData"></my-tree>
 </template>
@@ -30,7 +37,7 @@ const treeData = [
     ]
   }
 ]
-import myTree from './component/my-tree.vue'
+import myTree from '../my-tree/component/my-tree.vue'
 export default {
   components: {
     myTree
