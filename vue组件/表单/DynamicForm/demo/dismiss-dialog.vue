@@ -2,7 +2,7 @@
  * @Author: Hongzf
  * @Date: 2022-08-05 21:05:06
  * @LastEditors: Hongzf
- * @LastEditTime: 2022-08-25 16:23:42
+ * @LastEditTime: 2022-09-02 14:47:50
  * @Description:
 -->
 
@@ -20,7 +20,7 @@
       destroy-on-close
       v-on="$listeners"
     >
-      <form-panel
+      <DynamicForm
         ref="formPanel"
         :form-config="formConfig"
         :dialog-status="type"
@@ -31,7 +31,7 @@
         <template #dismissApplication="scope">
           <Upload :upload-data.sync="uploadData" :file-info="scope.item.dismissApplication" />
         </template>
-      </form-panel>
+      </DynamicForm>
       <!-- 底部按钮 -->
       <div slot="footer" class="dialog-footer">
         <el-button
@@ -56,11 +56,11 @@ import { dissmissFormRules, dissmissFormConfig } from './dialog-config';
 // import StaffDuty from '@/components/CurrentSystem/StaffDuty.vue'
 // import Department from '@/components/CurrentSystem/Department.vue'
 import Upload from './Upload.vue'
-import formPanel from './FormPanel';
+import DynamicForm from './DynamicForm';
 // import { queryTechnicalNameBySelect } from '@/api/select-02';
 
 export default {
-  components: { Upload, formPanel },
+  components: { Upload, DynamicForm },
   props: {
     // 编辑信息
     editData: {
