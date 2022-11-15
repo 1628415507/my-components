@@ -1,0 +1,47 @@
+<!--
+ * @Author: Hongzf
+ * @Date: 2022-11-15 09:52:24
+ * @LastEditors: Hongzf
+ * @LastEditTime: 2022-11-15 09:53:45
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            #map {
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 200px;
+                height: 100%;
+                z-index: 100;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="map"></canvas>
+        <script type="text/javascript" src="/pagemap.min.js"></script>
+        <script>
+            pagemap(document.querySelector('#map'));
+
+            // 样式可以修改
+            pagemap(document.querySelector('#map'), {
+                viewport: null,
+                styles: {
+                    'header,footer,section,article': 'rgba(0,0,0,0.08)',
+                    'h1,a': 'rgba(0,0,0,0.10)',
+                    'h2,h3,h4': 'rgba(0,0,0,0.08)'
+                },
+                back: 'rgba(0,0,0,0.02)',
+                view: 'rgba(0,0,0,0.05)',
+                drag: 'rgba(0,0,0,0.10)',
+                interval: null
+            });
+        </script>
+    </body>
+</html>
