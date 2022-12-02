@@ -7,11 +7,11 @@
 						:key="index" @click="luck_draw" :data-index="index">
 						<!-- 礼物 -->
 						<image v-if="index != 8" class="grid_img" mode='aspectFit'
-							:src="(current_index == index && index != 8)?lightImg:item.logo" alt="">
+							:src="(current_index == index && index != 8)?lightImg:item.logo" alt=""/>
 							<!-- <image v-if="index != 8" class="grid_img" mode='aspectFit' :src="item.logo" alt=""> -->
 							<!-- {{ index == 8 ? '抽奖' : index+1 }} -->
 							<!-- 开始抽奖 -->
-							<image v-if="index == 8" class="grid_img " mode='aspectFit' :src="drawStartImg" alt="开始抽奖">
+						<image v-if="index == 8" class="grid_img " mode='aspectFit' :src="drawStartImg" alt="开始抽奖"/>
 					</li>
 				</ul>
 			</view>

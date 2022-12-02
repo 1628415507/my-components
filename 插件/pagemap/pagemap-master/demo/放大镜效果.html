@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .img1{
+            width: 300px;
+            height: 300px;
+        }
+        .img2{
+            width: 3000px;
+            height: 3000px;
+            position: absolute;
+        }
+        #rightbox{
+            position: absolute;
+            top: 0;
+            left: 650px;
+            width: 900px;
+            height: 900px;
+            overflow: hidden;
+            display: none;
+        }
+        .yellow{
+            background-color: yellow;
+            opacity: 0.5;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .box1{
+            width: 300px;
+            height: 300px;
+            position: relative;
+            margin-left: 300PX;
+        }
+    </style>
+</head>
+<body>
+    <div class="box1">
+        <img src="./images/1.jpg" alt="" class="img1">
+        <div class="yellow"></div>
+    </div>
+    <div id="rightbox">
+        <img src="./images/1.jpg" alt="" class="img2">
+    </div>
+    <script>
+        // 获取页面上我们需要的元素
+        var box1=document.querySelector('.box1')
+        var yellow=document.querySelector('.yellow')
+        var box2=document.querySelector('#rightbox')
+        var srceen=rightbox.children[0]
+        // 鼠标进入和离开图片
+        box1.onmouseenter=function(){
+            box2.style.display='block'
+        }
+        box1.onmouseleave=function(){
+            box2.style.display='none'
+        }
+        // 鼠标在图片上移动触发事件
+        box1.onmousemove=function(e){
+            // 算出小盒子在图片的中心点
+           var x=e.pageX-box1.offsetLeft-yellow.offsetWidth/2
+           var y=e.pageY-box1.offsetTop-yellow.offsetHeight/2
+ 
+ 
+        //    判断小盒子是否超出img范围，使黄色小盒子不能超出img范围
+           if(x<0){
+            //    此时的0不是图片的左侧，而是小盒子在最左边时，小盒子的中心点
+               x=0
+           }else if(x>box1.offsetWidth-yellow.offsetWidth){
+            //    小盒子的X轴中心点大于图片盒子的宽度减去自身宽度时，说明超出，则始终等于图片盒子的宽度减去自身宽度
+            x=box1.offsetWidth-yellow.offsetWidth
+           }
+ 
+        //    同上
+           if(y<0){
+               y=0
+           }else if(y>box1.offsetHeight-yellow.offsetHeight){
+            y=box1.offsetHeight-yellow.offsetHeight
+           }
+ 
+ 
+        //    给黄色小盒子赋值，让黄色小盒子跟随鼠标移动
+           yellow.style.left=x+'px'
+           yellow.style.top=y+'px'
+ 
+ 
+        //    通过计算，得出小盒子在图片移动多少，显示区就移动多少的比例
+           srceen.style.left=-x/box1.offsetWidth*srceen.offsetWidth+'px'
+           srceen.style.top=-y/box1.offsetHeight*srceen.offsetHeight+'px'
+ 
+        //    计算黄色小盒子在图片上的大小
+           yellow.style.width=box1.offsetWidth/(srceen.offsetWidth/box2.offsetWidth)+'px'
+           yellow.style.height=box1.offsetHeight/(srceen.offsetHeight/box2.offsetHeight)+'px'
+        }
+        
+    </script>
+</body>
+</html>
