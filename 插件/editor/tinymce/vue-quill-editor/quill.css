@@ -1,0 +1,159 @@
+/* 字体、标题大小、字体大小的行间距 */
+.ql-snow .ql-picker {
+  line-height: 24px;
+}
+/* 字体大小滚动条 */
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  border-color: #ccc;
+  /* 加上height和滚动属性就可以，滚动条样式是系统默认样式，可能不同 */
+  min-height: 160px;
+  max-height: 260px;
+  overflow: auto;
+}
+/* // 这个是字号数字对应的显示的内容，vertical-align根据个人需要加不加，因为我页面那个字与其他对不齐 */
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12"]::before {
+  content: '12px';
+  vertical-align: top;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14"]::before {
+  content: '14px';
+  vertical-align: top;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16"]::before {
+  content: '16px';
+  vertical-align: top;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18"]::before {
+  content: '18px';
+  vertical-align: top;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20"]::before {
+  content: '20px';
+  vertical-align: top;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="22"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="22"]::before {
+  content: '22px';
+  vertical-align: top;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24"]::before {
+  content: '24px';
+  vertical-align: top;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="28"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="28"]::before {
+  content: '28px';
+  vertical-align: top;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="32"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="32"]::before {
+  content: '32px';
+  vertical-align: top;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="36"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="36"]::before {
+  content: '36px';
+  vertical-align: top;
+}
+
+/* 这个是字号数字对应的px值 */
+.ql-editor .ql-size-12 {
+  font-size: 12px;
+}
+.ql-editor .ql-size-14 {
+  font-size: 14px;
+}
+.ql-editor .ql-size-16 {
+  font-size: 16px;
+}
+.ql-editor .ql-size-18 {
+  font-size: 18px;
+}
+.ql-editor .ql-size-20 {
+  font-size: 20px;
+}
+.ql-editor .ql-size-22 {
+  font-size: 22px;
+}
+.ql-editor .ql-size-24 {
+  font-size: 24px;
+}
+.ql-editor .ql-size-28 {
+  font-size: 28px;
+}
+.ql-editor .ql-size-32 {
+  font-size: 32px;
+}
+.ql-editor .ql-size-36 {
+  font-size: 36px;
+}
+
+/* 选择字号富文本字的大小 */
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12"]::before {
+  font-size: 12px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14"]::before {
+  font-size: 14px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16"]::before {
+  font-size: 16px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18"]::before {
+  font-size: 18px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20"]::before {
+  font-size: 20px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="22"]::before {
+  font-size: 22px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24"]::before {
+  font-size: 24px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="28"]::before {
+  font-size: 28px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="32"]::before {
+  font-size: 32px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="36"]::before {
+  font-size: 36px;
+}
+/* 链接-弹框-标签文本内容 */
+.ql-tooltip::before {
+  content: "网址:" !important;
+  /* margin-right: 8px; */
+}
+.ql-tooltip a {
+  line-height: 39px !important;
+}
+.ql-tooltip a.ql-action::after {
+  /* border-right: 1px solid #ccc; */
+  content: '编辑' !important;
+  /* margin-left: 16px;
+  padding-right: 8px; */
+}
+.ql-tooltip a.ql-remove::before {
+  content: '删除' !important;
+  /* margin-left: 8px; */
+}
+.ql-tooltip[data-mode="link"]::before {
+  content: "网址:" !important;
+}
+/* 视频-弹框-标签文本内容 */
+.ql-tooltip[data-mode=video]::before {
+  content: "网址:" !important;
+}
+/* 视频-弹框-保存按钮文本内容 */
+.ql-tooltip.ql-editing a.ql-action::after {
+  content: '保存' !important;
+}
+/* .ql-tooltip .ql-editing{
+
+} */
